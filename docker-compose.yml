@@ -1,4 +1,4 @@
-version: '2'
+version: '3.7'
 
 services:
 
@@ -14,6 +14,8 @@ services:
       - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    hostname: elasticsearch
+    container_name: elasticsearch
     networks:
       - elk
 
@@ -28,12 +30,15 @@ services:
     ports:
       - "5000:5000"
       - "9600:9600"
+      - "5044:5044"
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
       - elk
     depends_on:
       - elasticsearch
+    hostname: logstash
+    container_name: logstash
 
   kibana:
     build:
@@ -50,6 +55,6 @@ services:
       - elasticsearch
 
 networks:
-
   elk:
     driver: bridge
+    name: elk
